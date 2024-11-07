@@ -1,6 +1,6 @@
 /******************************************************************
  *
- *   YOUR NAME / SECTION NUMBER
+ *   Piotr Slezak / Section 1
  *
  *   This java file contains the problem solutions of isSubSet, findKthLargest,
  *   and sort2Arrays methods. You should utilize the Java Collection Framework for
@@ -32,9 +32,20 @@ class ProblemSolutions {
 
     public boolean isSubset(int list1[], int list2[]) {
 
-        // ADD YOU CODE HERE -- DON'T FORGET TO ADD YOR NAME AT TOP OF FILE
+        Hashtable<Integer, Boolean> compare = new Hashtable<>();
 
-        return false;
+        for(int i : list1){ //puts list1 into Hashtable
+            compare.put(i , true);
+        } //time complexity of O(n)
+
+        for(int j : list2){
+            if(!compare.containsKey(j)){ //if compare doesn't have key, return false
+                return false;
+            }
+        } //time complexity of O(n)
+
+        // O(n) + O(n) still equals O(n)
+        return true;
     }
 
 
@@ -53,9 +64,17 @@ class ProblemSolutions {
 
     public int findKthLargest(int[] array, int k) {
 
-        // ADD YOUR CODE HERE
+        PriorityQueue<Integer> pQueue = new PriorityQueue<>();
 
-        return 0;
+        for(int i : array){ //adds entire array to PriorityQueue
+            pQueue.add(i);
+        }
+
+        for(int  j = array.length; j > k; j--){ //Priority queues are minHeaps if unaltered, so we start from the back.
+            pQueue.poll(); //polls (pops) off smallest integers until reaches desired kth.
+        }
+
+        return pQueue.peek();
     }
 
 
@@ -74,9 +93,25 @@ class ProblemSolutions {
 
     public int[] sort2Arrays(int[] array1, int[] array2) {
 
-        // ADD YOU CODE HERE
+        PriorityQueue<Integer> pQueue = new PriorityQueue<>();
 
-        return null;
+        for(int i : array1){ //adds all of array1 to pQueue
+            pQueue.add(i);
+        }
+
+        for(int j : array2){ //adds all of array2 to pQueue
+            pQueue.add(j);
+        }
+
+        int[] sortedArray = new int[pQueue.size()]; //creates new array size of pQueue
+        int index = 0;
+
+        while(pQueue.peek() != null){ //checks if pQueue has any elements
+            sortedArray[index] = pQueue.poll(); //adds smallest to array
+            index++; //iterates
+        }
+
+        return sortedArray;
     }
 
 }

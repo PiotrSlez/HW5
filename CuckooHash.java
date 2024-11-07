@@ -1,6 +1,6 @@
 /******************************************************************
  *
- *   YOUR NAME / SECTION NUMBER
+ *   Piotr Slezak / Section 1
  *
  *   Note, additional comments provided throughout this source code
  *   is for educational purposes
@@ -246,9 +246,25 @@ public class CuckooHash<K, V> {
 
  	public void put(K key, V value) {
 
-		// ADD YOUR CODE HERE - DO NOT FORGET TO ADD YOUR NAME AT TOP OF FILE.
-		// Also make sure you read this method's prologue above, it should help
-		// you. Especially the two HINTS in the prologue.
+		int pos1 = hash1(key); //passes key through hash1 and hash2
+		int pos2 = hash2(key);
+
+		if(table[pos1] == null){ //checks if first table is open
+			table[pos1] = new Bucket<>(key, value); //puts bucket in position 1
+		}
+
+		if(table[pos1] != null && table[pos2] == null){ //checks if first is full but second is open
+			K presentKey = table[pos1].getBucKey();
+			V presentValue = table[pos1].getValue();
+			table[pos2] = new Bucket<>(presentKey, presentValue); //moves pos1 to pos2
+			table[pos1] = new Bucket<>(key, value); //sets pos1 to current bucket
+		}
+
+		if(table[pos1] != null && table[pos2] != null){
+			//put(table[pos2].getBucKey(), table[pos2].getValue()); // this causes an infinite loop, I looked at hint 2 after coding this and tried to incorporate CAPACITY (without this line), I couldn't figure it out.
+			table[pos2] = table[pos1];
+			table[pos1] = new Bucket<>(key, value);
+		}
 
 		return;
 	}
